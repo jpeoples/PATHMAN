@@ -1,6 +1,6 @@
-% PATHMAN manage matlab packages
+% PATHMAN manage the MATLAB path
 %
-% Manage packages on the matlab path.
+% Manage directories on the matlab path semiautomatically.
 %
 % Can be used to install, update, remove, add-to-path and
 % remove-from-path
@@ -20,8 +20,8 @@
 %       original install location.
 %
 %       If srcdir is different from the original install location, the
-%       install location will be updated, and future update will use the
-%       new srcdir for updates.
+%       install location will be updated, and future updates will use
+%       the new srcdir for updates.
 %
 %   pathman remove/uninstall packname
 %       Remove package packname and all files generated for it by
@@ -34,8 +34,8 @@
 %       Remove the package packname from PATH
 %
 %   pathman list [glob]
-%       Return a list of installed packages.  If 'glob' is given, return
-%       files matching glob
+%       Display a list of installed packages.  If 'glob' is given,
+%       return files matching glob
 %
 %   pathman info packname
 %       Display information and configuration regarding package
