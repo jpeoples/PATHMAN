@@ -3,7 +3,7 @@ function [ tf ] = ispack( name )
 
 conf = pathman.conf;
 
-tf = exist([fullfile(conf.ROOT, name) conf.PACKAGEPOSTFIX]);
+tf = exist(get_package_dir(name));
 
 
 end

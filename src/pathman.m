@@ -6,14 +6,11 @@
 % remove-from-path
 %
 % Usage:
-%   pathman install srcdir [as packname] [to TARGETDIR]
-%       Installs the srcdir directory and all subdirs into the TARGETDIR
-%       (or PATHMANROOT/packname if unspecified).  If packname is not
-%       given, the name of the specified directory is used.  If a
-%       package with the specified name already exists, the function
-%       will complain.
-%
-%
+%   pathman install srcdir [as packname]
+%       Installs the srcdir directory and all subdirs into the directory
+%       PATHMANROOT/packname if unspecified.  If packname is not given,
+%       the name of the specified directory is used.  If a package with
+%       the specified name already exists, the function will complain.
 %
 %   pathman update packname [with srcdir]
 %       Overwrite the package packname with the contents of srcdir.
@@ -22,10 +19,9 @@
 %       If no srcdir is given, update the package directory from its
 %       original install location.
 %
-%       update lacks the options of install since the package is already
-%       configured with its install location, flattened status, and
-%       file-keeping status.  If you wish to chnge this configuration do
-%       a reinstallation by removing/uninstalling then installing.
+%       If srcdir is different from the original install location, the
+%       install location will be updated, and future update will use the
+%       new srcdir for updates.
 %
 %   pathman remove/uninstall packname
 %       Remove package packname and all files generated for it by
@@ -45,8 +41,7 @@
 %       Display information and configuration regarding package
 %       packname.
 %
-%   pathman conf
-%       Open the pathman config file in the editor.
+%   Jacob Peoples, 2016
 function pathman(varargin)
     if isempty(varargin)
         help_();
@@ -64,16 +59,16 @@ function pathman(varargin)
         case 'remove'
             remove(varargin{:});
         case 'uninstall'
-            remove(varargin{:};
+            remove(varargin{:});
         case 'use'
             use(varargin{:});
         case 'unuse'
             unuse(varargin{:});
         case 'list'
             list(varargin{:});
-        case 'conf'
-            conf(varargin{:});
-        case 'help'
+        case 'info'
+            info(varargin{:})
+        otherwise
             help_(varargin{:})
     end
 
@@ -110,11 +105,8 @@ function install(varargin)
     srcdir = varargin{1};
 
     opt.as = '';
-    opt.to = '';
-    opt.noflatten = '%FLAG%';
-    opt.keepnonm = '%FLAG%';
 
-    opt = parse(opt, arargin(2:end));
+    opt = parse(opt, varargin(2:end));
 
     pathman.install(srcdir, opt);
 end
@@ -124,7 +116,7 @@ function update(varargin)
 
     packname = varargin{1};
 
-    opt.srcdir = '';
+    opt.with = '';
     opt = parse(opt, varargin(2:end));
 
     pathman.update(packname, opt);
@@ -172,3 +164,4 @@ function info(varargin)
     packname = varargin{1};
 
     pathman.info(packname);
+end

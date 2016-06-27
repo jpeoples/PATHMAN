@@ -1,7 +1,7 @@
 function [ conf ] = conf()
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% EDIT THESE VALUES AS NECESSARY/DESIRED BEFORE FIRST USE
+% SET PATHMAN ROOT DIRECTORY BEFORE FIRST USE.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 % Set this value to the path where you would like to install packages.  It
@@ -11,20 +11,17 @@ conf.ROOT = '~/Documents/MATLAB/PATHMANPACKAGES';
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% You shouldn't need to edit these values, though you may.
-%
-% Editing values after using pathman to install packages will likely result
-% in errors.
+% Do not edit these values.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 if ~exist(conf.ROOT, 'dir')
     mkdir(conf.ROOT);
 end
 
 % add path install function name
-conf.ADDSCR = 'addtopath';
+conf.ADDSCR = 'addtopath.m';
 
 % remove from path function name
-conf.RMSCR = 'rmfrompath';
+conf.RMSCR = 'rmfrompath.m';
 
 % default path add remover function
 conf.MAKEPATHMODSCRIPTS = @buildpathmodscripts;

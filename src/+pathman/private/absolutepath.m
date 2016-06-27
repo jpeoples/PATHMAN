@@ -1,4 +1,4 @@
-function abs_path = absolutepath( rel_path, throwErrorIfFileNotExist )
+function  abs_path = absolutepath( rel_path, act_path, throwErrorIfFileNotExist )
 %ABSOLUTEPATH  returns the absolute path relative to a given startpath.
 %   The startpath is optional, if omitted the current dir is used instead.
 %   Both argument must be strings.
@@ -32,19 +32,18 @@ function abs_path = absolutepath( rel_path, throwErrorIfFileNotExist )
 %   - fixing bugs and writing test
 
 % 2nd parameter is optional:
-if nargin < 2
+if nargin < 3
     throwErrorIfFileNotExist = false;
-
+    if  nargin < 2
+        act_path = pwd;
+    end
 end
 
 %build absolute path
-file = java.io.File(rel_path);
+file = java.io.File([act_path filesep rel_path]);
 abs_path = char(file.getCanonicalPath());
 
 %check that file exists
 if throwErrorIfFileNotExist && ~exist(abs_path, 'file')
     throw(MException('absolutepath:fileNotExist', 'The path %s or file %s doesn''t exist', abs_path, abs_path(1:end-1)));
 end
-
-end
-
