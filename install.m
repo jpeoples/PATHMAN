@@ -23,7 +23,10 @@ function install(installdir)
     end
 
     cd(installdir);
-    edit('pathman.conf');
+    % don't configure if we kept old config.
+    if val < 2
+        edit('pathman.conf');
+    end
 end
 
 
