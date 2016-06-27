@@ -4,7 +4,7 @@ function [packageinfo, ignorelist] = get_initial_package_configuration(srcdir, o
     % start with basic
     packageinfo.name = opt.as;
     packageinfo.srcdir = srcdir;
-    packageinfo.targetdir = opt.to;
+    packageinfo.targetdir = get_package_dir(opt.as);
     packageinfo.installdate = get_datestr;
     packageinfo.modifieddate = get_datestr;
 

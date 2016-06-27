@@ -13,6 +13,7 @@ function update_package(packageinfo)
     mirror_src(packageinfo.srcdir, packageinfo.targetdir, packageinfo.ignorelist);
 
     packageinfo.modifieddate = get_datestr;
+    packageinfo.srcdir = absolutepath(packageinfo.srcdir); % ensure srcdir is abs
 
     writepackageinfo(packageinfo);
 end
