@@ -1,27 +1,35 @@
 % PATHMAN manage matlab packages
-% 
+%
 % Manage packages on the matlab path.
 %
-% Can be used to install, update, remove, add-to-path and remove-from-path
+% Can be used to install, update, remove, add-to-path and
+% remove-from-path
 %
 % Usage:
-%   pathman install srcdir [as packname]
-%       Installs the srcdir directory and all subdirs into the folder
-%       'packname' in the PATHMANROOT (usually the MATLAB folder).  If
-%       packname is not given, the name of the specified directory is used.
-%       If a package with the specified name already exists, the function
+%   pathman install srcdir [as packname] [to TARGETDIR]
+%       Installs the srcdir directory and all subdirs into the TARGETDIR
+%       (or PATHMANROOT/packname if unspecified).  If packname is not
+%       given, the name of the specified directory is used.  If a
+%       package with the specified name already exists, the function
 %       will complain.
 %
+%
+%
 %   pathman update packname [with srcdir]
-%       Overwrite the package packname with the contents of srcdir.  THIS
-%       IS A DESTRUCTIVE OPERATION.
+%       Overwrite the package packname with the contents of srcdir.
+%       THIS IS A DESTRUCTIVE OPERATION.
 %
 %       If no srcdir is given, update the package directory from its
 %       original install location.
 %
+%       update lacks the options of install since the package is already
+%       configured with its install location, flattened status, and
+%       file-keeping status.  If you wish to chnge this configuration do
+%       a reinstallation by removing/uninstalling then installing.
+%
 %   pathman remove/uninstall packname
-%       Delete the packname folder from PATHMANROOT.  You may use the word
-%       uninstall OR remove.
+%       Remove package packname and all files generated for it by
+%       pathman. (Does not affect install src directory.)
 %
 %   pathman use packname
 %       Add the package packname to PATH
@@ -32,6 +40,10 @@
 %   pathman list [glob]
 %       Return a list of installed packages.  If 'glob' is given, return
 %       files matching glob
+%
+%   pathman info packname
+%       Display information and configuration regarding package
+%       packname.
 %
 %   pathman conf
 %       Open the pathman config file in the editor.
@@ -51,6 +63,8 @@ function pathman(varargin)
             update(varargin{:});
         case 'remove'
             remove(varargin{:});
+        case 'uninstall'
+            remove(varargin{:};
         case 'use'
             use(varargin{:});
         case 'unuse'
@@ -66,6 +80,21 @@ function pathman(varargin)
 end
 
 
+function opt = parse(opt, argin, errmsg)
+    if nargin<3
+        errmsg = '';
+    end
+
+    [opt, unparsed] = pathman.ezparse(opt, argin);
+
+    if ~isempty(unparsed)
+        help_();
+        error(errmsg);
+    end
+
+
+end
+
 function conf(varargin)
     edit('pathman.conf')
     return
@@ -77,71 +106,28 @@ function help_(varargin)
 end
 
 function install(varargin)
-    len = length(varargin);
-    
-    if len==0 || len >=4
-        help_();
-        return
-    end
-    
-    if len >= 1
-        srcdir = varargin{1};
-    end
-    
-    
-    
-    if len == 1
-        [~, target, ~] = fileparts(srcdir);
-    end
 
-   
-    if len == 2
-        target = varargin{2};
-    end
-    
-    if len == 3
-        hasas = strcmp(varargin{2}, 'as');
-        if ~hasas
-            help_();
-            return
-        end
-        target = varargin{3};
-    end
-    
-    pathman.install(srcdir, target, false); % don't overwrite existing
+    srcdir = varargin{1};
+
+    opt.as = '';
+    opt.to = '';
+    opt.noflatten = '%FLAG%';
+    opt.keepnonm = '%FLAG%';
+
+    opt = parse(opt, arargin(2:end));
+
+    pathman.install(srcdir, opt);
 end
 
+
 function update(varargin)
-    len = length(varargin);
-    
-    if len < 1 || len >= 4
-        help_();
-        return
-    end
-    
-    target = varargin{1};
-    if len == 1
-        srcdir = pathman.get_package_info(target);
-        srcdir = srcdir.srcdir;
-    end
-    
-    if len == 2
 
-        srcdir = varargin{2};
-    end
-    
-    if len == 3
+    packname = varargin{1};
 
-        haswith = strcmp(varargin{2}, 'with');
-        
-        if ~haswith
-            help_()
-            return
-        end
-        srcdir = varargin{3};
-    end
-    
-    pathman.install(srcdir, target, true); % DO overwrite existing
+    opt.srcdir = '';
+    opt = parse(opt, varargin(2:end));
+
+    pathman.update(packname, opt);
 end
 
 function remove(varargin)
@@ -149,9 +135,8 @@ function remove(varargin)
         help_();
         return
     end
-    
+
     packname = varargin{1};
-    
     pathman.remove(packname);
 end
 
@@ -166,12 +151,24 @@ end
 function list(varargin)
     if length(varargin) > 1
         help_();
+        return;
     end
     if length(varargin) == 1
         glob = [varargin{1}];
     else
         glob = '*';
     end
-    
+
     pathman.list(glob);
 end
+
+function info(varargin)
+
+    if length(varargin) ~= 1
+        help_();
+        return;
+    end
+
+    packname = varargin{1};
+
+    pathman.info(packname);
