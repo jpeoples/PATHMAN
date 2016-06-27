@@ -34,7 +34,7 @@ Later, if I want to use the functions from `mypack`, I simply call
 
 and the functions are added to my path.
 
-Now, suppose I go an edit the functions in mypack, at their original
+Now, suppose I go and edit the functions in mypack, at their original
 location.  Now, calling `pathman use mypack` will load the old versions.
 To update I simply call
 
@@ -71,7 +71,7 @@ where INSTALLPATH is a location permanently on the MATLAB path (eg.
 At this point, a config file will open in the MATLAB editor.  You will
 see the line
 
-    conf.ROOT = ~/Documents/MATLAB/PATHMANPACKAGES
+    conf.ROOT = '~/Documents/MATLAB/PATHMANPACKAGES';
 
 Set this value to the location where you wish to store the copies of
 installed packs.  This location does not need to be on the path.
@@ -139,7 +139,7 @@ then the corresponding source folder in PATHMANPACKAGES becomes
     mypack.pack/
         src/
 
-Alternatively, if we simply wanted to treat src as a package, we could
+Alternatively, if we simply wanted to treat `src` as a package, we could
 just use
 
     pathman install mypack/src as mypack
