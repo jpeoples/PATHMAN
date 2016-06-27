@@ -21,13 +21,6 @@ from a directory called `src` instead, then I would write
 
     pathman install myfolder/src as mypack
 
-**NOTE**: *Unfortunately, it is required that the directory specified in
-the install statement is RELATIVE to the current working directory.  If
-an absolute path is used, the update function (see below) will fail.
-This is due to MATLAB's lack of a good function for retrieving an
-absolute path. (Simply using java directly to achieve this can also fail
-if you change MATLAB's working directory after java is loaded).*
-
 Later, if I want to use the functions from `mypack`, I simply call
 
     pathman use mypack
