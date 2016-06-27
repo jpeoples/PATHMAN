@@ -5,6 +5,22 @@ function  abs_path = absolutepath( path, rel_to )
 %
 %   The return value of this function does not indicate that the path
 %   actually exists.
+%
+%   Note: One might expect that the file.getCanonicalPath function would
+%   be enough to get the full path of either an absolute or relative
+%   path.  However, if matlab has changed directory since java was
+%   loaded, the result will be relative to the previous working
+%   directory.  To mitigate this, we must pass concatenate the working
+%   directory to the relative path, which obviously will fail for
+%   absolute paths.
+%
+%   Therefore, we must detect absolute paths first.  All that this
+%   function does is check if the path starts with
+%       X: (for windows paths)
+%   or
+%       / or ~ (for unix-y paths)
+%
+%   This is probably not the most robust, but it works for now.
 
     if determine_absolute(path)
         % if we have an absolute path, return the absolute path.
