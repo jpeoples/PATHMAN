@@ -8,11 +8,11 @@ function buildpathmodscripts( packname )
     addscrname = conf.ADDSCR;
     rmscrname = conf.RMSCR;
 
-    addcmd = sprintf('function %s(pd)\naddpath(genpath(pd));', addscrname);
-    rmcmd = sprintf('function %s(pd)\nrmpath(genpath(pd));', rmscrname);
+    addcmd = sprintf('function %s(pd)\naddpath(genpath(pd));', addscrname(1:end-2));
+    rmcmd = sprintf('function %s(pd)\nrmpath(genpath(pd));', rmscrname(1:end-2));
 
-    addscrname = [addscrname '.m'];
-    rmscrname = [rmscrname '.m'];
+    addscrname = addscrname;
+    rmscrname = rmscrname;
 
     fid = fopen(fullfile(targetdir, addscrname), 'w');
 
