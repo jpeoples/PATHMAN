@@ -1,6 +1,11 @@
 PATHMAN - A path manager for MATLAB
 ===================================
 
+*Note: The functionality of PATHMAN is likely to change considerably
+to include simple dependency handling and versions.  These changes will
+likely break compatibility with current PATHMAN.  Consider this version
+0 for now.*
+
 MATLAB finds functions/classes/packages by searching the current working
 directory, followed by the list of directories in its path variable.
 Directories can be added or removed from the path via the `addpath`
